@@ -320,7 +320,7 @@ form.container-fluid {
 	float : right;
 }
 
-.pilot.selected {
+.pilot.selected, .airspace.selected {
 	background-color : #F0AD4E;
 	animation: blink-animation 1s steps(5, start) infinite;
 	-webkit-animation: blink-animation 1s steps(5, start) infinite;
@@ -339,8 +339,8 @@ form.container-fluid {
 
 #searchPilot {
 	position: absolute;
-    	right: 16px;
-    	margin-top: -40px;
+	right: 16px;
+	margin-top: -40px;
 }
 
 #pilotPopover .btn {
@@ -437,7 +437,7 @@ form.container-fluid {
 
 #taskboard {
 	clear: both;
-        margin: 0px 0px 10px 0px;
+	margin: 0px 0px 10px 0px;
 	min-height: 100px;
 	border: 1px solid #FFF;
 	border-radius: 2px;
@@ -690,16 +690,16 @@ span.turnpointDistance {
  */
 #altitudeSlide {
 	-webkit-appearance: none;
-	width : 105px;
+	max-width : 100px;
 	border-radius : 10px;
-	height: 10px;
+	height: 15px;
 }
 
 #altitudeSlide::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	appearance: none;
-	width: 10px;
-	height: 10px;
+	width: 15px;
+	height: 15px;
 	background: #f0ad4e;
 }
 
@@ -716,11 +716,19 @@ span#fullboard-xm {
 	font-size : 0.8em;
 }
 
+.presetFiles input {
+	cursor : pointer;
+}
+
 #airspaceWarning {
 	margin : 0px -15px;
 	background-color : #f0ad4e;
 	padding : 10px;
 	text-align : center;
+}
+
+.filterAirspace {
+	margin-bottom: 10px;
 }
 
 #airspaces ul {
@@ -737,6 +745,19 @@ span#fullboard-xm {
 
 #airspaces .message {
 	text-align : justify;
+}
+
+#floorControl {
+	padding : 10px 0px;
+}
+
+#altitudeLimit {
+	display : flex;
+	padding : 10px 0px;
+}
+
+#altitudeLimit:after {
+	content : " m";
 }
 
 .listAirspace {

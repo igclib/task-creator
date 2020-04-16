@@ -7,14 +7,7 @@ import * as Helper from "./imports/helper";
 
 Template.airspaces.helpers({	
 	airspaces : function() {
-		var T = Template.instance();
-		var airspaces = Airspaces.find({}, {sort : {class : 1}}).fetch();
-		var names = airspaces.reduce(function(acc, cur, i) {
-			acc[cur.name] = i;
-			return acc;
-		}, {});
-		T.nameIndex.set(names);
-		return airspaces;
+		return Airspaces.findOne();
 	},
 	classColor : function(zoneClass) {
 		return Parameters.param.airspaces.color[zoneClass] ? Parameters.param.airspaces.color[zoneClass] : "#f0ad4e";
@@ -30,7 +23,13 @@ Template.airspaces.helpers({
 	},
 	validAirspaces : function() {
 		var T = Template.instance();
-		return Airspaces.find({$and : [{'toHide' : {$not : true}}, {'floor.internalValue' : {$lte : T.showFloor.get()}}]}).fetch();
+		var airspaces = Airspaces.find({$and : [{'toHide' : {$not : true}}, {'floor.internalValue' : {$lte : T.showFloor.get()}}]}).fetch();
+		var names = airspaces.reduce(function(acc, cur, i) {
+			acc[cur.name] = i;
+			return acc;
+		}, {});
+		T.nameIndex.set(names);
+		return airspaces;
 	},
 });
 
@@ -72,20 +71,36 @@ Template.airspaces.events({
 		T.showClass.set(selected);
 		toggleAirspace(T);
 	},
-	'change .presetFiles input[type="checkbox"]' : function(e) {
+	'change .presetFiles li' : function(e) {
 		var T = Template.instance();
 		var file = $(e.target).attr('name');
+		console.log($(e.target));
 		if($(e.target).is(":checked")) {
 			T.subscribe('airspaces');
 			return;
 		}
+	},
+	'click #moreFloor' : function() {
+		var T = Template.instance();
+		var value = T.showFloor.get();
+		var newValue = (value + 50 > 6000) ? 6000 : value+ 50;
+		T.showFloor.set(newValue);
+		$('#altitudeLimit').html(newValue);
+		toggleAirspace(T);
+	},
+	'click #minusFloor' : function() {
+		var T = Template.instance();
+		var value = T.showFloor.get();
+		var newValue = (value - 50 < 0) ? 0 : value - 50;
+		T.showFloor.set(newValue);
+		$('#altitudeLimit').html(newValue);
+		toggleAirspace(T);
 	},
 	'click .listAirspace li' : function(e) {
 		var id = $(e.target).attr('ref');
 		if (!id) {
 			id = $(e.target).parent().attr('ref');
 		}
-		console.log(id);
 		var e = new CustomEvent('airspaceRequest', {'detail' : id});
 		window.dispatchEvent(e);
 	},
@@ -98,8 +113,10 @@ Template.airspaces.events({
 			onSelectItem : function(item) {
 				var airspace = $('.airspace[index=' + item.value + ']');
 				var currentPosition = $('.listAirspace').scrollTop();
+				var topOffset = $('.listAirspace').position().top;
+				// Don't know exactly why we need this top offset. It's still exact.
 				$('.listAirspace').animate({
-					scrollTop: airspace.offset().top,
+					scrollTop: currentPosition + airspace.offset().top - topOffset,
 				}, 1000);
 				airspace.addClass('selected');
 				setTimeout(function() {

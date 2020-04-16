@@ -8,7 +8,7 @@
 				</h5>
 				<div class="presetFiles">
 					<ul>
-						<li><input class="AirspaceFFVV" name="FFVV" type ="checkbox"> French OpenAir FFVV</li>
+						<li name="FFVV"><input class="AirspaceFFVV form-control-inline" name="FFVV" type="checkbox"/> <label>French OpenAir FFVV</label></li>
 					</ul>
 				</div>
                 <div id="airspaceWarning">
@@ -33,9 +33,15 @@
 							</ul>	
 					</div>
 					<div id="airFloor" class="col-6">
-						<input type="range" min="0" max="6000" step="50" value="1000" id="altitudeSlide"/>
-						<span id="altitudeLimit"> 1000 </span>m
-					</div>
+                        <div class="row">
+                            <input id="altitudeSlide" class="col-8" type="range" min="0" max="6000" step="50" value="1000"/>
+                            <div id="floorControl" class="col-4">
+                                <button class="btn btn-xs btn-light" id="moreFloor"><i class="fa fa-chevron-up"></i></button>
+                                <span id="altitudeLimit">1000</span>
+                                <button class="btn btn-xs btn-light" id="minusFloor"><i class="fa fa-chevron-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
 				</div>
                 <div id="searchAirspace">
                     <label class="sr-only" for="inlineFormInputGroup">Search Airspace</label>

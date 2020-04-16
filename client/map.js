@@ -150,6 +150,10 @@ Template.map.onRendered( function onLeaf() {
 	function clickAirspace(e) {
 		var polygon = zones[e.detail];
 		polygon.fire('click');
+		var zoom = map.getZoom();
+		if (zoom > 6) {
+			map.setZoom(zoom - 2);
+		}
 	}
 
 	Airspaces.find().observe({

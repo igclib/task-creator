@@ -20,7 +20,9 @@ Meteor.startup(() => {
 	var fs = Npm.require('fs');
 	const { spawn } = require('child_process');
 
-	Airspaces.remove({});
+	// Used for debug and get things clear
+	//Airspaces.remove({});
+
 	// Check environement variable DEFAULT_AIRSPACE to get path.
 	var child = spawn('printenv DEFAULT_AIRSPACE', {shell : true});
 	child.stdout.on('data', Meteor.bindEnvironment(function(data) {
@@ -58,7 +60,4 @@ Meteor.startup(() => {
 			}
 		}));
 	}));
-	child.stderr.on('data', function(data) {
-		console.log(JSON.parse(data.toString));
-	})
 });
